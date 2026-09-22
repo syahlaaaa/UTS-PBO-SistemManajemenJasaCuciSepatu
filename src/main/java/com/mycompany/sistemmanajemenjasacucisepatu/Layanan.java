@@ -1,6 +1,7 @@
 package com.mycompany.sistemmanajemenjasacucisepatu;
 
 public class Layanan {
+
     protected String namaLayanan;
     protected double harga;
     protected int estimasiHari;

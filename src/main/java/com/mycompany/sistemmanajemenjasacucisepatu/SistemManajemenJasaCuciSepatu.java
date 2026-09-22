@@ -12,11 +12,14 @@ public class SistemManajemenJasaCuciSepatu {
     static ArrayList<Layanan> daftarLayanan = new ArrayList<>();
     static ArrayList<Booking> daftarBooking = new ArrayList<>();
 
+    static int nomorBookingBerikutnya = 1;
+
     public static void main(String[] args) {
+
 
         daftarLayanan.add(new CuciReguler());
         daftarLayanan.add(new CuciExpress());
-
+        daftarLayanan.add(new CuciPremium());
 
         Pelanggan p1 = new Pelanggan(
                 "P001",
@@ -26,14 +29,13 @@ public class SistemManajemenJasaCuciSepatu {
 
         Pelanggan p2 = new Pelanggan(
                 "P002",
-                "Alya",
+                "Calaa",
                 "08234567890"
         );
 
         daftarPelanggan.add(p1);
         daftarPelanggan.add(p2);
 
-    
         Sepatu s1 = new Sepatu(
                 "S001",
                 "Nike Air Force 1",
@@ -49,31 +51,7 @@ public class SistemManajemenJasaCuciSepatu {
         daftarSepatu.add(s1);
         daftarSepatu.add(s2);
 
-        Booking b1 = new Booking(
-                "B001",
-                p1,
-                s1,
-                daftarLayanan.get(1),
-                "20-09-2026"
-        );
-
-        Booking b2 = new Booking(
-                "B002",
-                p2,
-                s2,
-                daftarLayanan.get(0),
-                "20-09-2026"
-        );
-
-        // Supaya contoh data dummy punya status berbeda
-        b2.ubahStatus("Selesai");
-
-        daftarBooking.add(b1);
-        daftarBooking.add(b2);
-
-
         loading("Menyiapkan sistem");
-
 
         int pilihan;
 
@@ -98,8 +76,10 @@ public class SistemManajemenJasaCuciSepatu {
             System.out.print("Pilih menu: ");
 
             while (!input.hasNextInt()) {
+
                 System.out.println("Input harus berupa angka.");
                 input.next();
+
                 System.out.print("Pilih menu: ");
             }
 
@@ -181,15 +161,37 @@ public class SistemManajemenJasaCuciSepatu {
         System.out.println("Sistem siap digunakan!");
     }
 
-
     public static void tambahPelanggan() {
 
         System.out.println("========================================");
         System.out.println("          TAMBAH DATA PELANGGAN");
         System.out.println("========================================");
 
-        System.out.print("ID Pelanggan : ");
-        String id = input.nextLine();
+        System.out.println("Data Pelanggan Saat Ini:");
+
+        if (daftarPelanggan.isEmpty()) {
+
+            System.out.println("Belum ada data pelanggan.");
+
+        } else {
+
+            for (Pelanggan pelanggan : daftarPelanggan) {
+
+                System.out.println(
+                        pelanggan.getIdPelanggan()
+                        + " - "
+                        + pelanggan.getNamaPelanggan()
+                        + " - "
+                        + pelanggan.getNoTelepon()
+                );
+            }
+        }
+
+        System.out.println();
+
+        String idBaru = generateIdPelanggan();
+
+        System.out.println("ID Pelanggan otomatis : " + idBaru);
 
         System.out.print("Nama         : ");
         String nama = input.nextLine();
@@ -197,18 +199,44 @@ public class SistemManajemenJasaCuciSepatu {
         System.out.print("No. Telepon  : ");
         String telepon = input.nextLine();
 
-        Pelanggan pelanggan = new Pelanggan(
-                id,
+        Pelanggan pelangganBaru = new Pelanggan(
+                idBaru,
                 nama,
                 telepon
         );
 
-        daftarPelanggan.add(pelanggan);
+        daftarPelanggan.add(pelangganBaru);
 
         System.out.println();
         System.out.println("Data pelanggan berhasil ditambahkan.");
     }
 
+    public static String generateIdPelanggan() {
+
+        int nomorTerbesar = 0;
+
+        for (Pelanggan pelanggan : daftarPelanggan) {
+
+            String id = pelanggan.getIdPelanggan();
+
+            try {
+
+                int nomor = Integer.parseInt(
+                        id.substring(1)
+                );
+
+                if (nomor > nomorTerbesar) {
+                    nomorTerbesar = nomor;
+                }
+
+            } catch (NumberFormatException e) {
+
+            }
+        }
+
+        return "P"
+                + String.format("%03d", nomorTerbesar + 1);
+    }
 
     public static void lihatPelanggan() {
 
@@ -217,7 +245,9 @@ public class SistemManajemenJasaCuciSepatu {
         System.out.println("========================================");
 
         if (daftarPelanggan.isEmpty()) {
+
             System.out.println("Belum ada data pelanggan.");
+
             return;
         }
 
@@ -236,8 +266,31 @@ public class SistemManajemenJasaCuciSepatu {
         System.out.println("             TAMBAH DATA SEPATU");
         System.out.println("========================================");
 
-        System.out.print("ID Sepatu    : ");
-        String id = input.nextLine();
+        System.out.println("Data Sepatu Saat Ini:");
+
+        if (daftarSepatu.isEmpty()) {
+
+            System.out.println("Belum ada data sepatu.");
+
+        } else {
+
+            for (Sepatu sepatu : daftarSepatu) {
+
+                System.out.println(
+                        sepatu.getIdSepatu()
+                        + " - "
+                        + sepatu.getNamaSepatu()
+                        + " - "
+                        + sepatu.getJenisSepatu()
+                );
+            }
+        }
+
+        System.out.println();
+
+        String idBaru = generateIdSepatu();
+
+        System.out.println("ID Sepatu otomatis : " + idBaru);
 
         System.out.print("Nama Sepatu  : ");
         String nama = input.nextLine();
@@ -245,16 +298,44 @@ public class SistemManajemenJasaCuciSepatu {
         System.out.print("Jenis Sepatu : ");
         String jenis = input.nextLine();
 
-        Sepatu sepatu = new Sepatu(
-                id,
+        Sepatu sepatuBaru = new Sepatu(
+                idBaru,
                 nama,
                 jenis
         );
 
-        daftarSepatu.add(sepatu);
+        daftarSepatu.add(sepatuBaru);
 
         System.out.println();
         System.out.println("Data sepatu berhasil ditambahkan.");
+    }
+
+    public static String generateIdSepatu() {
+
+        int nomorTerbesar = 0;
+
+        for (Sepatu sepatu : daftarSepatu) {
+
+            String id = sepatu.getIdSepatu();
+
+            try {
+
+                int nomor = Integer.parseInt(
+                        id.substring(1)
+                );
+
+                if (nomor > nomorTerbesar) {
+                    nomorTerbesar = nomor;
+                }
+
+            } catch (NumberFormatException e) {
+
+                // Mengabaikan ID yang formatnya tidak sesuai
+            }
+        }
+
+        return "S"
+                + String.format("%03d", nomorTerbesar + 1);
     }
 
     public static void lihatSepatu() {
@@ -264,7 +345,9 @@ public class SistemManajemenJasaCuciSepatu {
         System.out.println("========================================");
 
         if (daftarSepatu.isEmpty()) {
+
             System.out.println("Belum ada data sepatu.");
+
             return;
         }
 
@@ -276,6 +359,7 @@ public class SistemManajemenJasaCuciSepatu {
         }
     }
 
+
     public static void lihatLayanan() {
 
         System.out.println("========================================");
@@ -286,12 +370,12 @@ public class SistemManajemenJasaCuciSepatu {
 
             System.out.println("Layanan " + (i + 1));
 
+            // POLYMORPHISM
             daftarLayanan.get(i).tampilkanLayanan();
 
             System.out.println("----------------------------------------");
         }
     }
-
 
     public static void buatBooking() {
 
@@ -300,17 +384,33 @@ public class SistemManajemenJasaCuciSepatu {
         System.out.println("========================================");
 
         if (daftarPelanggan.isEmpty()) {
+
             System.out.println("Belum ada data pelanggan.");
+
             return;
         }
 
         if (daftarSepatu.isEmpty()) {
+
             System.out.println("Belum ada data sepatu.");
+
             return;
         }
-        String idBooking = "B" + String.format("%03d", daftarBooking.size() + 1);
 
-        System.out.println("ID Booking otomatis : " + idBooking);
+        String idBooking =
+                "B" + String.format(
+                        "%03d",
+                        nomorBookingBerikutnya
+                );
+
+        nomorBookingBerikutnya++;
+
+        System.out.println(
+                "ID Booking otomatis : "
+                + idBooking
+        );
+
+
         System.out.println();
         System.out.println("Daftar Pelanggan:");
 
@@ -324,15 +424,23 @@ public class SistemManajemenJasaCuciSepatu {
         }
 
         System.out.print("Masukkan ID Pelanggan: ");
+
         String idPelanggan = input.nextLine();
 
-        Pelanggan pelanggan = cariPelanggan(idPelanggan);
+        Pelanggan pelanggan =
+                cariPelanggan(idPelanggan);
 
         if (pelanggan == null) {
-            System.out.println("Pelanggan tidak ditemukan.");
+
+            System.out.println(
+                    "Pelanggan tidak ditemukan."
+            );
+
             return;
         }
 
+
+        System.out.println();
         System.out.println("Daftar Sepatu:");
 
         for (Sepatu sepatu : daftarSepatu) {
@@ -345,80 +453,119 @@ public class SistemManajemenJasaCuciSepatu {
         }
 
         System.out.print("Masukkan ID Sepatu: ");
+
         String idSepatu = input.nextLine();
 
-        Sepatu sepatu = cariSepatu(idSepatu);
+        Sepatu sepatu =
+                cariSepatu(idSepatu);
 
         if (sepatu == null) {
-            System.out.println("Sepatu tidak ditemukan.");
+
+            System.out.println(
+                    "Sepatu tidak ditemukan."
+            );
+
             return;
         }
-
 
         System.out.println();
         System.out.println("Daftar Layanan:");
 
-        for (int i = 0; i < daftarLayanan.size(); i++) {
+        for (int i = 0;
+                i < daftarLayanan.size();
+                i++) {
 
-            Layanan layanan = daftarLayanan.get(i);
+            Layanan layanan =
+                    daftarLayanan.get(i);
 
             System.out.println(
                     (i + 1)
                     + ". "
                     + layanan.getNamaLayanan()
                     + " - Rp"
-                    + String.format("%.0f", layanan.getHarga())
+                    + String.format(
+                            "%.0f",
+                            layanan.getHarga()
+                    )
             );
         }
 
         System.out.print("Pilih layanan: ");
 
         while (!input.hasNextInt()) {
-            System.out.println("Pilihan harus berupa angka.");
+
+            System.out.println(
+                    "Pilihan harus berupa angka."
+            );
+
             input.next();
-            System.out.print("Pilih layanan: ");
+
+            System.out.print(
+                    "Pilih layanan: "
+            );
         }
 
-        int pilihanLayanan = input.nextInt();
+        int pilihanLayanan =
+                input.nextInt();
+
         input.nextLine();
 
-        if (pilihanLayanan < 1 || pilihanLayanan > daftarLayanan.size()) {
+        if (pilihanLayanan < 1
+                || pilihanLayanan
+                > daftarLayanan.size()) {
 
-            System.out.println("Pilihan layanan tidak tersedia.");
+            System.out.println(
+                    "Pilihan layanan tidak tersedia."
+            );
+
             return;
         }
 
-        Layanan layanan = daftarLayanan.get(pilihanLayanan - 1);
-
-
-        System.out.print("Tanggal Booking (dd-mm-yyyy): ");
-        String tanggal = input.nextLine();
-
+        Layanan layanan =
+                daftarLayanan.get(
+                        pilihanLayanan - 1
+                );
         loading("Memproses booking");
 
-        Booking booking = new Booking(
-                idBooking,
-                pelanggan,
-                sepatu,
-                layanan,
-                tanggal
-        );
+        Booking booking =
+                new Booking(
+                        idBooking,
+                        pelanggan,
+                        sepatu,
+                        layanan
+                );
 
         daftarBooking.add(booking);
 
         System.out.println();
-        System.out.println("Booking berhasil dibuat!");
-        System.out.println("ID Booking : " + idBooking);
-        System.out.println("Status     : Diproses");
+        System.out.println(
+                "Booking berhasil dibuat!"
+        );
+
+        System.out.println(
+                "ID Booking : "
+                + idBooking
+        );
+
+        System.out.println(
+                "Tanggal     : otomatis"
+        );
+
+        System.out.println(
+                "Status     : Diproses"
+        );
     }
 
+    public static Pelanggan cariPelanggan(
+            String id) {
 
+        for (Pelanggan pelanggan :
+                daftarPelanggan) {
 
-    public static Pelanggan cariPelanggan(String id) {
+            if (pelanggan
+                    .getIdPelanggan()
+                    .equalsIgnoreCase(id)) {
 
-        for (Pelanggan pelanggan : daftarPelanggan) {
-
-            if (pelanggan.getIdPelanggan().equalsIgnoreCase(id)) {
                 return pelanggan;
             }
         }
@@ -426,19 +573,22 @@ public class SistemManajemenJasaCuciSepatu {
         return null;
     }
 
+    public static Sepatu cariSepatu(
+            String id) {
 
-    public static Sepatu cariSepatu(String id) {
+        for (Sepatu sepatu :
+                daftarSepatu) {
 
-        for (Sepatu sepatu : daftarSepatu) {
+            if (sepatu
+                    .getIdSepatu()
+                    .equalsIgnoreCase(id)) {
 
-            if (sepatu.getIdSepatu().equalsIgnoreCase(id)) {
                 return sepatu;
             }
         }
 
         return null;
     }
-
 
     public static void lihatBooking() {
 
@@ -448,12 +598,15 @@ public class SistemManajemenJasaCuciSepatu {
 
         if (daftarBooking.isEmpty()) {
 
-            System.out.println("Belum ada booking.");
+            System.out.println(
+                    "Belum ada booking."
+            );
 
             return;
         }
 
-        for (Booking booking : daftarBooking) {
+        for (Booking booking :
+                daftarBooking) {
 
             booking.tampilkanBooking();
 
@@ -469,15 +622,19 @@ public class SistemManajemenJasaCuciSepatu {
 
         if (daftarBooking.isEmpty()) {
 
-            System.out.println("Belum ada booking.");
+            System.out.println(
+                    "Belum ada booking."
+            );
 
             return;
         }
 
+        System.out.println(
+                "Daftar Booking:"
+        );
 
-        System.out.println("Daftar Booking:");
-
-        for (Booking booking : daftarBooking) {
+        for (Booking booking :
+                daftarBooking) {
 
             System.out.println(
                     booking.getIdBooking()
@@ -488,77 +645,121 @@ public class SistemManajemenJasaCuciSepatu {
 
         System.out.println();
 
-        System.out.print("Masukkan ID Booking: ");
-        String idBooking = input.nextLine();
+        System.out.print(
+                "Masukkan ID Booking: "
+        );
 
-        Booking booking = cariBooking(idBooking);
+        String idBooking =
+                input.nextLine();
+
+        Booking booking =
+                cariBooking(idBooking);
 
         if (booking == null) {
 
-            System.out.println("Booking tidak ditemukan.");
+            System.out.println(
+                    "Booking tidak ditemukan."
+            );
 
             return;
         }
 
         System.out.println();
-        System.out.println("Status saat ini: " + booking.getStatus());
+
+        System.out.println(
+                "Status saat ini: "
+                + booking.getStatus()
+        );
 
         System.out.println();
-        System.out.println("Pilih Status Baru:");
-        System.out.println("1. Diproses");
-        System.out.println("2. Selesai");
-        System.out.println("3. Diambil");
 
-        System.out.print("Pilihan: ");
+        System.out.println(
+                "Pilih Status Baru:"
+        );
+
+        System.out.println(
+                "1. Diproses"
+        );
+
+        System.out.println(
+                "2. Selesai"
+        );
+
+        System.out.println(
+                "3. Diambil"
+        );
+
+        System.out.print(
+                "Pilihan: "
+        );
 
         while (!input.hasNextInt()) {
 
-            System.out.println("Pilihan harus berupa angka.");
+            System.out.println(
+                    "Pilihan harus berupa angka."
+            );
 
             input.next();
 
-            System.out.print("Pilihan: ");
+            System.out.print(
+                    "Pilihan: "
+            );
         }
 
-        int pilihan = input.nextInt();
+        int pilihan =
+                input.nextInt();
+
         input.nextLine();
 
         String statusBaru;
 
-        switch (pilihan) {
+        if (pilihan == 1) {
 
-            case 1:
-                statusBaru = "Diproses";
-                break;
+            statusBaru =
+                    "Diproses";
 
-            case 2:
-                statusBaru = "Selesai";
-                break;
+        } else if (pilihan == 2) {
 
-            case 3:
-                statusBaru = "Diambil";
-                break;
+            statusBaru =
+                    "Selesai";
 
-            default:
-                System.out.println("Pilihan status tidak tersedia.");
-                return;
+        } else if (pilihan == 3) {
+
+            statusBaru =
+                    "Diambil";
+
+        } else {
+
+            System.out.println(
+                    "Pilihan status tidak tersedia."
+            );
+
+            return;
         }
 
-        booking.ubahStatus(statusBaru);
+        booking.ubahStatus(
+                statusBaru
+        );
 
         System.out.println();
+
         System.out.println(
-                "Status booking berhasil diubah menjadi "
+                "Status booking berhasil "
+                + "diubah menjadi "
                 + statusBaru + "."
         );
     }
 
 
-    public static Booking cariBooking(String id) {
+    public static Booking cariBooking(
+            String id) {
 
-        for (Booking booking : daftarBooking) {
+        for (Booking booking :
+                daftarBooking) {
 
-            if (booking.getIdBooking().equalsIgnoreCase(id)) {
+            if (booking
+                    .getIdBooking()
+                    .equalsIgnoreCase(id)) {
 
                 return booking;
             }
@@ -566,6 +767,7 @@ public class SistemManajemenJasaCuciSepatu {
 
         return null;
     }
+
 
     public static void hapusBooking() {
 
@@ -575,14 +777,19 @@ public class SistemManajemenJasaCuciSepatu {
 
         if (daftarBooking.isEmpty()) {
 
-            System.out.println("Belum ada booking.");
+            System.out.println(
+                    "Belum ada booking."
+            );
 
             return;
         }
 
-        System.out.println("Daftar Booking:");
+        System.out.println(
+                "Daftar Booking:"
+        );
 
-        for (Booking booking : daftarBooking) {
+        for (Booking booking :
+                daftarBooking) {
 
             System.out.println(
                     booking.getIdBooking()
@@ -593,36 +800,54 @@ public class SistemManajemenJasaCuciSepatu {
 
         System.out.println();
 
-        System.out.print("Masukkan ID Booking: ");
-        String idBooking = input.nextLine();
+        System.out.print(
+                "Masukkan ID Booking: "
+        );
 
-        Booking booking = cariBooking(idBooking);
+        String idBooking =
+                input.nextLine();
+
+        Booking booking =
+                cariBooking(idBooking);
 
         if (booking == null) {
 
-            System.out.println("Booking tidak ditemukan.");
+            System.out.println(
+                    "Booking tidak ditemukan."
+            );
 
             return;
         }
 
-        if (!booking.getStatus().equalsIgnoreCase("Diambil")) {
+        if (!booking
+                .getStatus()
+                .equalsIgnoreCase("Diambil")) {
 
             System.out.println();
-            System.out.println("Booking belum dapat dihapus.");
+
+            System.out.println(
+                    "Booking belum dapat dihapus."
+            );
+
             System.out.println(
                     "Status saat ini: "
                     + booking.getStatus()
             );
+
             System.out.println(
-                    "Booking hanya dapat dihapus jika statusnya Diambil."
+                    "Booking hanya dapat dihapus "
+                    + "jika statusnya Diambil."
             );
 
             return;
         }
 
-        daftarBooking.remove(booking);
+        daftarBooking.remove(
+                booking
+        );
 
         System.out.println();
+
         System.out.println(
                 "Booking "
                 + idBooking

@@ -1,6 +1,7 @@
 package com.mycompany.sistemmanajemenjasacucisepatu;
 
 public class Pelanggan {
+
     private String idPelanggan;
     private String namaPelanggan;
     private String noTelepon;

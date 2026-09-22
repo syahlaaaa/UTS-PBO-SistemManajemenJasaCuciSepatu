@@ -1,6 +1,7 @@
 package com.mycompany.sistemmanajemenjasacucisepatu;
 
 public class Sepatu {
+
     private String idSepatu;
     private String namaSepatu;
     private String jenisSepatu;
