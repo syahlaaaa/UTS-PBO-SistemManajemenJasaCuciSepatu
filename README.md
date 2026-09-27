@@ -1,5 +1,7 @@
 ### 👟 Sistem Manajemen Jasa Cuci Sepatu
 
+### UTS PEMROGRAMAN BERORIENTASI OBJEK
+
  🧼 Aplikasi sederhana berbasis Java untuk membantu mengelola layanan jasa cuci sepatu.
  ### 👤 Identitas
  | Data | Keterangan |
@@ -41,15 +43,20 @@ Setiap layanan memiliki harga dan estimasi waktu pengerjaan yang berbeda.
 
 ---
 
-Aplikasi ini dibuat dengan menerapkan konsep **Object-Oriented Programming (OOP)**, seperti:
+## 🧩 Konsep yang Diterapkan
 
-- 🧩 Class dan Object
-- 🔐 Encapsulation
-- 🏗️ Constructor
-- 📚 ArrayList
-- 🔄 Inheritance
-- 🔍 Method
-- 🛡️ Input Validation
+Aplikasi ini dibuat dengan menerapkan beberapa konsep dasar **Object-Oriented Programming (OOP)**, yaitu:
+
+- 🧩 **Class dan Object**
+- 🔐 **Encapsulation**
+- 🏗️ **Constructor**
+- 📚 **ArrayList**
+- 🔄 **Inheritance**
+- 🎭 **Polymorphism**
+- 🔍 **Method dan Method Overriding**
+- 🔀 **Condition (If-Else)**
+- 🔁 **Looping**
+- 🛡️ **Input Validation**
 
 ### ⚙️ Fitur Program
 
@@ -297,6 +304,9 @@ Booking hanya dapat dihapus apabila statusnya sudah Diambil.
 
 Menu ini digunakan untuk mengakhiri program.
 
+### 📁 Struktur Class
+
+<img width="415" height="242" alt="image" src="https://github.com/user-attachments/assets/e52d6248-a2e9-41e0-9f26-ed7a73a8dad3" />
 
 
 struktur yang sudah tersedia pada class Layanan tanpa membuat ulang
